@@ -53,7 +53,7 @@ ls -l /etc/shadow /etc/gshadow /etc/group /etc/passwd
 
 `passwd` and `group` contain account and group information that ordinary users can read. The shadow files contain protected password-related information and have more restricted access.
 
-My original assignment asked for `600` on the shadow files. I kept Ubuntu's existing `640` permissions with the `shadow` group. I learned to check the operating system's defaults before changing important system files.
+My original assignment asked for 600 on the shadow files. I kept Ubuntu's existing `640` permissions with the `shadow` group. I learned to check the operating system's defaults before changing important system files.
 
 ![Account-file permissions](screenshots/02-account-file-permissions.png)
 
@@ -71,9 +71,9 @@ sudo useradd -m -U -s /bin/bash admin1
 
 The options helped me understand what `useradd` was setting up:
 
-- `-m` creates the user's home directory.
-- `-U` creates a group with the same name as the user.
-- `-s /bin/bash` sets the login shell to Bash.
+- -m creates the user's home directory.
+- -U creates a group with the same name as the user.
+- -s /bin/bash sets the login shell to Bash.
 
 I verified the accounts and home directories:
 
@@ -82,7 +82,7 @@ getent passwd sam joe amy sara admin1
 ls -ld /home/sam /home/joe /home/amy /home/sara /home/admin1
 ```
 
-Each account had the expected home directory and shell. The home directories belonged to their respective users and private groups, with permissions of `750`.
+Each account had the expected home directory and shell. The home directories belonged to their respective users and private groups, with permissions of 750.
 
 [Screenshot: Sam's account](screenshots/03-sam-account-created.png)
 
