@@ -51,9 +51,9 @@ ls -l /etc/shadow /etc/gshadow /etc/group /etc/passwd
 | `/etc/shadow` | `root:shadow` | `640` (`-rw-r-----`) |
 | `/etc/gshadow` | `root:shadow` | `640` (`-rw-r-----`) |
 
-`passwd` and `group` contain account and group information that ordinary users can read. The shadow files contain protected password-related information and have more restricted access.
+passwd and group contain account and group information that ordinary users can read. The shadow files contain protected password-related information and have more restricted access.
 
-My original assignment asked for 600 on the shadow files. I kept Ubuntu's existing `640` permissions with the `shadow` group. I learned to check the operating system's defaults before changing important system files.
+My original assignment asked for 600 on the shadow files. I kept Ubuntu's existing 640 permissions with the shadow group. I learned to check the operating system's defaults before changing important system files.
 
 ![Account-file permissions](screenshots/02-account-file-permissions.png)
 
