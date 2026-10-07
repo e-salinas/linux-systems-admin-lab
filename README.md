@@ -32,9 +32,9 @@ sudo -l
 
 These commands show the Ubuntu release, CPU architecture, current account and groups, and available sudo privileges.
 
-[Screenshot: Ubuntu environment](screenshots/01-ubuntu-environment.png)
+![Screenshot: Ubuntu environment](screenshots/01-ubuntu-environment.png)
 
-**Lab limitation:** Ubuntu 25.10 had reached end of life when I completed this lab. I used the existing VM for practice. Moving to a supported Ubuntu release remains a follow-up task.
+**Lab limitation:** Ubuntu 25.10 had reached end of life when I completed this lab. I used the existing VM for practice.
 
 ## 1. Check account-file permissions
 
@@ -59,7 +59,7 @@ My original assignment asked for 600 on the shadow files. I kept Ubuntu's existi
 
 ## 2. Create the lab accounts
 
-I created five accounts with home directories, private groups, and Bash shells:
+I created five accounts with home directories, private groups, and Bash shells.
 
 ```bash
 sudo useradd -m -U -s /bin/bash sam
@@ -69,13 +69,13 @@ sudo useradd -m -U -s /bin/bash sara
 sudo useradd -m -U -s /bin/bash admin1
 ```
 
-The options helped me understand what `useradd` was setting up:
+The options helped me understand what useradd was setting up.
 
 - -m creates the user's home directory.
 - -U creates a group with the same name as the user.
 - -s /bin/bash sets the login shell to Bash.
 
-I verified the accounts and home directories:
+I verified the accounts and home directories.
 
 ```bash
 getent passwd sam joe amy sara admin1
@@ -84,13 +84,13 @@ ls -ld /home/sam /home/joe /home/amy /home/sara /home/admin1
 
 Each account had the expected home directory and shell. The home directories belonged to their respective users and private groups, with permissions of 750.
 
-[Screenshot: Sam's account](screenshots/03-sam-account-created.png)
+![Screenshot: Sam's account](screenshots/03-sam-account-created.png)
 
 ![All five lab accounts and home directories](screenshots/04-lab-accounts-created.png)
 
 ## 3. Assign and verify sudo access
 
-I set a password for admin1 and added it to the sudo group:
+I set a password for admin1 and added it to the sudo group.
 
 ```bash
 sudo passwd admin1
@@ -103,9 +103,9 @@ In usermod, -G selects supplementary groups and -a appends membership while pres
 
 The output confirmed that admin1 had full sudo access. The existing steve account also retained its administrator access.
 
-[Screenshot: Admin1 sudo access](screenshots/05-admin1-sudo-access.png)
+![Screenshot: Admin1 sudo access](screenshots/05-admin1-sudo-access.png)
 
-I checked the four standard lab users separately:
+I checked the four standard lab users separately.
 
 ```bash
 sudo -l -U sam
@@ -114,13 +114,13 @@ sudo -l -U amy
 sudo -l -U sara
 ```
 
-All four returned a message saying they were not allowed to run sudo. This was the result I wanted: only admin1 had sudo access among the five new accounts.
+All four returned a message saying they were not allowed to run sudo. This was the result I wanted. Only admin1 had sudo access among the five new accounts.
 
 ![Standard lab users denied sudo access](screenshots/06-standard-users-no-sudo.png)
 
 ## 4. Create a shared group and folder
 
-I created the engineers group and added the four standard users:
+I created the engineers group and added the four standard users.
 
 ```bash
 sudo groupadd engineers
@@ -133,9 +133,9 @@ getent group engineers
 
 I also ran id for each user to verify membership. The group contained sam, joe, amy, and sara.
 
-[Screenshot: Engineers group membership](screenshots/07-engineers-group-membership.png)
+![Screenshot: Engineers group membership](screenshots/07-engineers-group-membership.png)
 
-Then I created the shared folder:
+Then I created the shared folder.
 
 ```bash
 sudo mkdir /home/engineers
@@ -154,7 +154,7 @@ The result was drwxrws---, owned by root:engineers. I used this instead of the o
 
 ### Sam creates a file
 
-From my administrator account, I opened a login shell as Sam:
+From my administrator account, I opened a login shell as Sam.
 
 ```bash
 sudo -iu sam
@@ -168,15 +168,15 @@ exit
 
 sudo -iu sam switches to Sam's login shell. After that, the file commands run as Sam. whoami confirmed the identity.
 
-The session's umask 0007 allowed a normal new text file to have permissions of 660: owner and group could read and write, others had no access. This umask applied to that shell session. I did not configure a permanent default or a default ACL.
+The session's umask 0007 allowed a normal new text file to have permissions of 660, owner and group could read and write, others had no access. This umask applied to that shell session. I did not configure a permanent default or a default ACL.
 
-The file belonged to sam:engineers. This also verified that the folder's setgid setting worked. Setgid controls group inheritance; the umask helped give the new file group write permission.
+The file belonged to sam:engineers. This also verified that the folder's setgid setting worked. Setgid controls group inheritance. The umask helped give the new file group write permission.
 
-[Screenshot: Sam creates the shared file](screenshots/09-sam-shared-file-created.png)
+![Screenshot: Sam creates the shared file](screenshots/09-sam-shared-file-created.png)
 
 ### Joe edits Sam's file
 
-Back as Steve, I switched to Joe and tested the same file:
+Back as Steve, I switched to Joe and tested the same file.
 
 ```bash
 sudo -iu joe
@@ -194,7 +194,7 @@ exit
 
 ### Admin1 is denied ordinary access
 
-I tested admin1, which was outside the engineers group:
+I tested admin1, which was outside the engineers group.
 
 ```bash
 sudo -iu admin1
@@ -225,7 +225,7 @@ sudo lynis audit system --quick
 
 The version was 3.1.4, and the package status was **install ok installed**. The --quick option skips pauses between sections while still running the audit checks.
 
-[Screenshot: Lynis installation and version](screenshots/12-lynis-installed.png)
+![Screenshot: Lynis installation and version](screenshots/12-lynis-installed.png)
 
 | Audit result | Value |
 | --- | --- |
@@ -239,7 +239,7 @@ The hardening index is a Lynis indicator of system hardening. It is not a percen
 
 ![Lynis audit summary](screenshots/13-lynis-audit-summary.png)
 
-I selected the findings from the report with grep:
+I selected the findings from the report with grep.
 
 ```bash
 sudo grep -E '^(warning|suggestion)\[\]=' /var/log/lynis-report.dat
@@ -248,7 +248,7 @@ sudo grep '^warning\[\]=' /var/log/lynis-report.dat
 
 The first command displays warnings and suggestions. The second displays only warnings.
 
-[Screenshot: Selected audit suggestions](screenshots/14-lynis-audit-findings.png)
+![Screenshot: Selected audit suggestions](screenshots/14-lynis-audit-findings.png)
 
 ### Findings and possible follow-up
 
