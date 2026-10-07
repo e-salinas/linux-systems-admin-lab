@@ -168,7 +168,7 @@ exit
 
 sudo -iu sam switches to Sam's login shell. After that, the file commands run as Sam. whoami confirmed the identity.
 
-The session's umask 0007 allowed a normal new text file to have permissions of 660, owner and group could read and write, others had no access. This umask applied to that shell session. I did not configure a permanent default or a default ACL.
+The session's umask 0007 allowed a normal new text file to have permissions of 660. The owner and group could read and write, others had no access. This umask applied to that shell session. I did not configure a permanent default or a default ACL.
 
 The file belonged to sam:engineers. This also verified that the folder's setgid setting worked. Setgid controls group inheritance. The umask helped give the new file group write permission.
 
@@ -188,7 +188,7 @@ ls -l /home/engineers/team-notes.txt
 exit
 ```
 
->> appends text to the file. Joe successfully read and updated it, and ownership remained sam:engineers.
+`>>` appends text to the file. Joe successfully read and updated it, and ownership remained sam:engineers.
 
 ![Joe reads and updates Sam's file](screenshots/10-joe-shared-file-access.png)
 
