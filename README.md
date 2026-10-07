@@ -90,7 +90,7 @@ Each account had the expected home directory and shell. The home directories bel
 
 ## 3. Assign and verify sudo access
 
-I set a password for `admin1` and added it to the `sudo` group:
+I set a password for admin1 and added it to the sudo group:
 
 ```bash
 sudo passwd admin1
@@ -99,9 +99,9 @@ id admin1
 sudo -l -U admin1
 ```
 
-In `usermod`, `-G` selects supplementary groups and `-a` appends membership while preserving existing groups. In `sudo -l -U admin1`, `-l` lists privileges and `-U` selects the account to check.
+In usermod, -G selects supplementary groups and -a appends membership while preserving existing groups. In sudo -l -U admin1, -l lists privileges and -U selects the account to check.
 
-The output confirmed that `admin1` had full sudo access. The existing `steve` account also retained its administrator access.
+The output confirmed that admin1 had full sudo access. The existing steve account also retained its administrator access.
 
 [Screenshot: Admin1 sudo access](screenshots/05-admin1-sudo-access.png)
 
@@ -114,13 +114,13 @@ sudo -l -U amy
 sudo -l -U sara
 ```
 
-All four returned a message saying they were not allowed to run sudo. This was the result I wanted: only `admin1` had sudo access among the five new accounts.
+All four returned a message saying they were not allowed to run sudo. This was the result I wanted: only admin1 had sudo access among the five new accounts.
 
 ![Standard lab users denied sudo access](screenshots/06-standard-users-no-sudo.png)
 
 ## 4. Create a shared group and folder
 
-I created the `engineers` group and added the four standard users:
+I created the engineers group and added the four standard users:
 
 ```bash
 sudo groupadd engineers
@@ -131,7 +131,7 @@ sudo usermod -aG engineers sara
 getent group engineers
 ```
 
-I also ran `id` for each user to verify membership. The group contained `sam`, `joe`, `amy`, and `sara`.
+I also ran id for each user to verify membership. The group contained sam, joe, amy, and sara.
 
 [Screenshot: Engineers group membership](screenshots/07-engineers-group-membership.png)
 
@@ -144,9 +144,9 @@ sudo chmod 2770 /home/engineers
 ls -ld /home/engineers
 ```
 
-`chown` sets the owner and group. The `2770` permissions give the owner and group permission to list, modify, and enter the directory. Other users have no access. The leading `2` sets the setgid bit, which makes new files inherit the directory's group.
+chown sets the owner and group. The 2770 permissions give the owner and group permission to list, modify, and enter the directory. Other users have no access. The leading 2 sets the setgid bit, which makes new files inherit the directory's group.
 
-The result was `drwxrws---`, owned by `root:engineers`. I used this instead of the original lab's `777` permissions so the folder would be restricted to the intended group.
+The result was drwxrws---, owned by root:engineers. I used this instead of the original lab's 777 permissions so the folder would be restricted to the intended group.
 
 ![Shared folder ownership and permissions](screenshots/08-engineers-shared-folder.png)
 
@@ -166,11 +166,11 @@ cat /home/engineers/team-notes.txt
 exit
 ```
 
-`sudo -iu sam` switches to Sam's login shell. After that, the file commands run as Sam. `whoami` confirmed the identity.
+sudo -iu sam switches to Sam's login shell. After that, the file commands run as Sam. whoami confirmed the identity.
 
-The session's `umask 0007` allowed a normal new text file to have permissions of `660`: owner and group could read and write, while others had no access. This umask applied to that shell session; I did not configure a permanent default or a default ACL.
+The session's umask 0007 allowed a normal new text file to have permissions of 660: owner and group could read and write, others had no access. This umask applied to that shell session. I did not configure a permanent default or a default ACL.
 
-The file belonged to `sam:engineers`. This also verified that the folder's setgid setting worked. Setgid controls group inheritance; the umask helped give the new file group write permission.
+The file belonged to sam:engineers. This also verified that the folder's setgid setting worked. Setgid controls group inheritance; the umask helped give the new file group write permission.
 
 [Screenshot: Sam creates the shared file](screenshots/09-sam-shared-file-created.png)
 
@@ -188,13 +188,13 @@ ls -l /home/engineers/team-notes.txt
 exit
 ```
 
-`>>` appends text to the file. Joe successfully read and updated it, and ownership remained `sam:engineers`.
+>> appends text to the file. Joe successfully read and updated it, and ownership remained sam:engineers.
 
 ![Joe reads and updates Sam's file](screenshots/10-joe-shared-file-access.png)
 
 ### Admin1 is denied ordinary access
 
-I tested `admin1`, which was outside the engineers group:
+I tested admin1, which was outside the engineers group:
 
 ```bash
 sudo -iu admin1
@@ -223,7 +223,7 @@ dpkg -s lynis
 sudo lynis audit system --quick
 ```
 
-The version was `3.1.4`, and the package status was `install ok installed`. The `--quick` option skips pauses between sections while still running the audit checks.
+The version was 3.1.4, and the package status was **install ok installed**. The --quick option skips pauses between sections while still running the audit checks.
 
 [Screenshot: Lynis installation and version](screenshots/12-lynis-installed.png)
 
@@ -239,7 +239,7 @@ The hardening index is a Lynis indicator of system hardening. It is not a percen
 
 ![Lynis audit summary](screenshots/13-lynis-audit-summary.png)
 
-I selected the findings from the report with `grep`:
+I selected the findings from the report with grep:
 
 ```bash
 sudo grep -E '^(warning|suggestion)\[\]=' /var/log/lynis-report.dat
@@ -263,7 +263,7 @@ The first command displays warnings and suggestions. The second displays only wa
 
 ![Two Lynis package warnings](screenshots/15-lynis-audit-warnings.png)
 
-I documented these findings but did not apply the suggested hardening changes or fix the package warnings. I also did not confirm the cause of either warning. Reviewing an audit is part of the work; each suggested change still needs to be checked against the system's purpose.
+I documented these findings but did not apply the suggested hardening changes or fix the package warnings. Each suggested change still needs to be checked against the system's purpose.
 
 ## What I learned
 
